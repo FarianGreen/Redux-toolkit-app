@@ -1,0 +1,117 @@
+.wrapper__card {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+.card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 320px;
+  margin-top: 120px;
+  border-radius: 18px;
+  overflow: hidden;
+  background-color: #fff;
+  -webkit-box-shadow: 14px 5px 17px 6px rgba(130, 136, 130, 1);
+  -moz-box-shadow: 14px 5px 17px 6px rgba(130, 136, 130, 1);
+  box-shadow: 14px 5px 17px 6px rgba(130, 136, 130, 1);
+}
+.card-body {
+  padding: 10px 0 10px 10px;
+}
+
+.card::before {
+  position: absolute;
+  content: "";
+  width: 9rem;
+  height: 140%;
+  background: linear-gradient(#006eff, #60f901);
+  box-shadow: 0 0 6px rgba(36, 187, 36, 1);
+  animation: animate 4s linear infinite;
+}
+.card::after {
+  content: "";
+  position: absolute;
+  background-color: #fff;
+  inset: 5px;
+}
+.card__content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  z-index: 1;
+}
+.div-with-img {
+  margin-top: 5px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 300px;
+  height: 280px;
+  overflow: hidden;
+  border-radius: 10px;
+}
+.div-with-img img {
+  object-fit: cover;
+  object-position: center;
+}
+@keyframes animate {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.m-list {
+  padding-left: 0;
+  margin-bottom: 0;
+  list-style: none;
+}
+.m-list__item {
+  padding: 9px;
+}
+.card-link a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  list-style: none;
+}
+.link-episode {
+  text-decoration: none;
+}
+.card-link {
+  text-decoration: none;
+}
+.card-link + .card-link {
+  margin-left: 0;
+  text-decoration: none;
+}
+.card-tag {
+  margin-right: 5px;
+  padding: 5px 15px;
+  font-size: 14px;
+  font-weight: 400;
+  border: 1px solid white;
+  border-radius: 16px;
+  color: #fff;
+}
+.green {
+  background: rgb(15, 170, 15);
+}
+.red {
+  background: brown;
+}
+.gray {
+  background: rgb(70, 68, 68);
+}
+.male {
+  background: rgb(100, 100, 223);
+}
+.female {
+  background: pink;
+}
+.unknown {
+  background: gray;
+}

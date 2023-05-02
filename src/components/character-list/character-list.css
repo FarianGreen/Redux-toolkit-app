@@ -1,0 +1,28 @@
+.tag {
+  width: 65px;
+  text-align: center;
+  border: 1px solid;
+}
+.my-menu {
+  cursor: pointer;
+}
+.spin {
+  margin-left: 50%;
+}
+.table {
+  margin-top: 9%;
+  padding: 0 45px 10px 45px;
+  min-width: 700px;
+}
+.wrapper__table {
+  min-width: 700px;
+  margin: 0 auto;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+@media (max-width: 767px) {
+  .table {
+    padding: 35px;
+  }
+}

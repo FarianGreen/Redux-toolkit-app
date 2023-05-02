@@ -1,0 +1,40 @@
+.header {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 30px;
+  background-color: rgb(35, 30, 30);
+  font-size: 25px;
+  height: auto;
+  position: fixed;
+  z-index: 3;
+  width: 100%;
+}
+.wrap__logo {
+  width: 200px;
+  margin-left: 10px;
+}
+.logo{
+  max-width: 100%;
+  padding-bottom: 20px;
+}
+.burger-btn span {
+  cursor: pointer;
+  font-size: 40px;
+  align-items: center;
+}
+.nav-burger {
+  margin-top: 8px;
+  display: none;
+}
+.header-link {
+  cursor: pointer;
+  text-decoration: none;
+  color: rgb(196, 238, 81);
+}
+@media (max-width: 767px){
+  .nav-burger {
+    display: block;
+    color: aquamarine;
+  }
+}
