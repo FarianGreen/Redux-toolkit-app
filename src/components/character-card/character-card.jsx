@@ -1,29 +1,28 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import "./character-card.css";
+import { useDispatch, useSelector } from "react-redux";
+import { takeCharacter } from "../../sliceRedux/sliceHaveData";
+import withRMservice from "../hoc/with-RMservice";
 
-const CharacterDetails = (props) => {
+const CharacterDetails = ({ RMservice }) => {
   const { id } = useParams();
-
-  const [character, setCharacter] = useState();
+  const dispatch = useDispatch();
+  const charId = useSelector((state) => state.episodes.charId);
+  const character = useSelector((state) => state.characters.character);
 
   useEffect(() => {
-    upadateCharacter();
-  }, [props.charId || id]);
+    updateCharacter();
+  }, [charId || id]);
 
-  function upadateCharacter() {
-    const { charId, data } = props;
-
-    if (!charId && !id) {
-      return <div>no Id</div>;
-    }
-
-    data(charId || id).then((character) => {
-      setCharacter(character);
-    });
+  async function updateCharacter() {
+    const response = await RMservice.getCharacter(id).then((results) =>
+      dispatch(takeCharacter(results))
+    );
+    return response;
   }
 
-  if (!character) {
+  if (character.length == 0) {
     return <div>no character</div>;
   }
 
@@ -86,4 +85,4 @@ const CharacterDetails = (props) => {
   );
 };
 
-export default CharacterDetails;
+export default withRMservice()(CharacterDetails);

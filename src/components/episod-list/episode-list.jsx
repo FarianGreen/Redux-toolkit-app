@@ -1,13 +1,12 @@
 import "./episod-list.css";
-import React, { useEffect, useState } from "react";
 import { Table, Tag } from "antd";
 import { Link, useParams } from "react-router-dom";
 import Spinner from "../spinner";
-import withRMservice from "../hoc/with-RMservice";
 import { useDispatch, useSelector } from "react-redux";
-import { takeEpisodesExistId, takeEpisodesExistPage, takePage, takeTotalCountPages } from "../../sliceRedux/sliceEpisodeList";
+import { takePage } from "../../sliceRedux/sliceEpisodeList";
+import { useEpisodesData } from "../hooks/useEpisodesData";
 
-const EpisodeList = ({ charId, RMservice }) => {
+const EpisodeList = () => {
   const { id } = useParams();
 
   const columns = [
@@ -61,55 +60,9 @@ const EpisodeList = ({ charId, RMservice }) => {
 
   const dispatch = useDispatch();
 
-  const episodeList = useSelector((state) => state.episodes.episodeList);
-  const totalPages = useSelector((state) => state.episodes.countEpisodesInPage);
-  const page = useSelector((state) => state.episodes.page)
+  const page = useSelector((state) => state.episodes.page);
 
-  useEffect(() => {
-    haveEpisodeData();
-  }, [page, id, charId]);
-
-  async function dataExistIds() {
-    const response = await RMservice.getCharacter(charId || id).then(
-      (results) => {
-        dispatch(takeTotalCountPages(results.episode))
-        return results.episode;
-      }
-    );
-
-    const dataEpisods = await RMservice.getCharacterEpisode(response).then(
-      (results) => {
-        if (results.length > 1) {
-          return results.map((item) => ({ ...item, key: item.id }));
-        } else return [results];
-      }
-    );
-    return dispatch(takeEpisodesExistId(dataEpisods));
-  }
-
-  async function dataExistPage() {
-    const episodes = await RMservice.getAllEpisodes(page).then((response) => {
-      return response.results.map((item) => ({ ...item, key: item.id }));
-    });
-    const infoEpisodes = await RMservice.getAllEpisodes(page).then(
-      (response) => {
-        return response.info.count;
-      }
-    );
-    return dispatch(takeEpisodesExistPage(episodes)), dispatch(takeTotalCountPages(infoEpisodes));
-  }
-
-  async function haveEpisodeData() {
-    const isExistIds = Boolean(id) || Boolean(charId);
-    const isExistPage = Boolean(page);
-
-    switch (true) {
-      case isExistIds:
-        return dataExistIds();
-      case isExistPage:
-        return dataExistPage();
-    }
-  }
+  const { episodeList, totalPages } = useEpisodesData(page, id);
 
   if (!episodeList) {
     return (
@@ -129,7 +82,7 @@ const EpisodeList = ({ charId, RMservice }) => {
           showSizeChanger: false,
           pageSize: 20,
           onChange: (page) => {
-            dispatch(takePage(page))
+            dispatch(takePage(page));
           },
           total: totalPages,
         }}
@@ -138,4 +91,4 @@ const EpisodeList = ({ charId, RMservice }) => {
   );
 };
 
-export default withRMservice()(EpisodeList);
+export default EpisodeList;

@@ -2,8 +2,12 @@ import { Link } from "react-router-dom";
 import "./header.css";
 import Rick_and_Morty_logo from "../../img/Rick_and_Morty_logo.png";
 import Menu from "../menu/menu";
+import { useDispatch, useSelector } from "react-redux";
+import { isMenuActive } from "../../sliceRedux/sliceMenu";
 
-const Header = ({ menuActive, setMenuActive, items, RMservice }) => {
+const Header = ({ items }) => {
+  const menuActive = useSelector((state) => state.menu.menuActive);
+  const dispatch = useDispatch();
   const body = document.body;
   return (
     <div className="header">
@@ -16,7 +20,7 @@ const Header = ({ menuActive, setMenuActive, items, RMservice }) => {
         <div
           className="burger-btn"
           onClick={() => {
-            setMenuActive(!menuActive);
+            dispatch(isMenuActive(!menuActive));
             body.classList.toggle("lock");
           }}
         >
@@ -24,7 +28,7 @@ const Header = ({ menuActive, setMenuActive, items, RMservice }) => {
         </div>
       </div>
 
-      <Menu active={menuActive} setActive={setMenuActive} items={items} />
+      <Menu items={items} />
     </div>
   );
 };

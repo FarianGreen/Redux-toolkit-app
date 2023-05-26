@@ -1,19 +1,17 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Table, Tag } from "antd";
 import "./character-list.css";
 import { Link, useParams } from "react-router-dom";
 import Spinner from "../spinner";
-import withRMservice from "../hoc/with-RMservice";
-import {
-  takePage,
-  takeCharactersExistPage,
-  takeCharactersExistId,
-  takeTotalCountPages,
-} from "../../sliceRedux/sliceHaveData";
+import { takePage } from "../../sliceRedux/sliceHaveData";
+import { takeCharId } from "../../sliceRedux/sliceEpisodeList";
 import { useDispatch, useSelector } from "react-redux";
+import { useCharactersListData } from "../hooks/useCharacterListData";
 
-const CharacterList = ({ RMservice, onCharacterSelected }) => {
+const CharacterList = () => {
   const { id } = useParams();
+
+  const dispatch = useDispatch();
 
   const columns = [
     { key: "0", title: "ID", dataIndex: "id" },
@@ -122,7 +120,7 @@ const CharacterList = ({ RMservice, onCharacterSelected }) => {
         return (
           <Link
             to={`/character/${record.id}`}
-            onClick={() => onCharacterSelected(record.id)}
+            onClick={() => dispatch(takeCharId(record.id))}
           >
             <span className="material-symbols-outlined my-menu">menu_open</span>
           </Link>
@@ -131,61 +129,9 @@ const CharacterList = ({ RMservice, onCharacterSelected }) => {
     },
   ];
 
-  const dispatch = useDispatch();
-
-  const listCharacters = useSelector(
-    (state) => state.characters.charactersList
-  );
-  const totalPages = useSelector((state) => state.characters.countCharactersInPage);
-
   const page = useSelector((state) => state.characters.page);
 
-  useEffect(() => {
-    haveData();
-  }, [page,id]);
-
-  async function dataExistIds() {
-    const response = await RMservice.getSingleEpisode(id).then((results) => {
-      dispatch(takeTotalCountPages(results.characters));
-      return results.characters;
-    });
-
-    const dataCharactersInEpisod = await RMservice.getCharacter(response).then(
-      (results) => {
-        if (results.length > 1) {
-          return results.map((item) => ({ ...item, key: item.id }));
-        } else return [results];
-      }
-    );
-    return dispatch(takeCharactersExistId(dataCharactersInEpisod));
-  }
-
-  async function dataExistPage() {
-    const charactersList = await RMservice.getAllCharacters(page).then(
-      (response) => {
-        return response.results.map((item) => ({ ...item, key: item.id }));
-      }
-    );
-    const infoCharacters = await RMservice.getAllCharacters(page).then(
-      (response) => {
-        return response.info.count
-      }
-    );
-    dispatch(takeTotalCountPages(infoCharacters));
-    return dispatch(takeCharactersExistPage(charactersList));
-  }
-
-  async function haveData() {
-    const isExistId = Boolean(id);
-    const isExistPage = Boolean(page);
-
-    switch (true) {
-      case isExistId:
-        return dataExistIds();
-      case isExistPage:
-        return dataExistPage();
-    }
-  }
+  const { listCharacters, totalPages } = useCharactersListData(page, id);
 
   if (!listCharacters) {
     return (
@@ -213,4 +159,4 @@ const CharacterList = ({ RMservice, onCharacterSelected }) => {
     </div>
   );
 };
-export default withRMservice()(CharacterList);
+export default CharacterList;

@@ -16,14 +16,7 @@ import store from "../../store";
 const App = () => {
   const RMservice = new RMapiService();
 
-  const [characterId, setCharacterId] = useState();
-  const [menuActive, setMenuActive] = useState(false);
-
-  const onCharacterSelected = (characterId) => {
-    setCharacterId(characterId);
-  };
-
-  const items = [
+  const menuItems = [
     {
       id: 1,
       value: "Home",
@@ -43,56 +36,29 @@ const App = () => {
       icon: "density_small",
     },
   ];
-  
+
   return (
     <div className="app">
       <Provider store={store}>
         <ErrorBoundry>
           <RMserviceProvider value={RMservice}>
             <BrowserRouter>
-              <Header
-                menuActive={menuActive}
-                setMenuActive={setMenuActive}
-                items={items}
-              />
+              <Header items={menuItems} />
               <Routes>
                 <Route path="/" element={<StartPage />} />
                 <Route path="/episode" element={<EpisodeList />} />
-                <Route
-                  path="list"
-                  element={
-                    <CharacterList onCharacterSelected={onCharacterSelected} />
-                  }
-                />
-                <Route
-                  path="character"
-                  element={
-                    <CharacterDetails
-                      charId={characterId}
-                      data={RMservice.getCharacter}
-                    />
-                  }
-                />
-                <Route
-                  path="character/:id"
-                  element={
-                    <CharacterDetails
-                      charId={characterId}
-                      data={RMservice.getCharacter}
-                    />
-                  }
-                />
+                <Route path="list" element={<CharacterList />} />
+                <Route path="character" element={<CharacterDetails />} />
+                <Route path="character/:id" element={<CharacterDetails />} />
 
                 <Route
                   path="episode_with_character/:id"
-                  element={<EpisodeList charId={characterId} />}
+                  element={<EpisodeList />}
                 />
 
                 <Route
                   path="characters_in_episode/:id"
-                  element={
-                    <CharacterList onCharacterSelected={onCharacterSelected} />
-                  }
+                  element={<CharacterList />}
                 />
               </Routes>
             </BrowserRouter>

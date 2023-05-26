@@ -6,6 +6,7 @@ export const sliceHaveData = createSlice({
     countCharactersInPage: 0,
     page: [1],
     charactersList: [],
+    character: [],
   },
   reducers: {
     takeCharactersExistPage: (state, action) => {
@@ -16,6 +17,9 @@ export const sliceHaveData = createSlice({
     },
     takeTotalCountPages: (state, action) => {
       state.countCharactersInPage = action.payload;
+    },
+    takeCharacter: (state, action) => {
+      state.character = action.payload;
     },
     takePage: (state, action) => {
       state.page = action.payload;
@@ -28,4 +32,5 @@ export const {
   takePage,
   takeCharactersExistId,
   takeTotalCountPages,
+  takeCharacter
 } = sliceHaveData.actions;
